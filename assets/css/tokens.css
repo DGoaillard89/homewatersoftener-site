@@ -1,0 +1,72 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Change brand colours, type and spacing here — everything else reads from
+   these variables, so tweaks in this file won't break layout elsewhere.
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --color-primary: #0b6bcb;        /* main blue — buttons, links */
+  --color-primary-dark: #084e94;
+  --color-primary-light: #e8f2fc;
+  --color-accent: #19c2b0;         /* aqua accent */
+  --color-ink: #0c1b2e;            /* headings / dark sections */
+  --color-text: #3b4a5c;           /* body copy */
+  --color-muted: #6b7a8c;
+  --color-line: #e3e9f0;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f8fb;
+
+  /* Parent brand: DS Water */
+  --ds-green: #1b4a3c;
+  --ds-green-dark: #123329;
+
+  /* Hardness scale (used by the dial + legend) */
+  --hard-soft: #19c2b0;
+  --hard-mod-soft: #4cc98a;
+  --hard-slight: #a6d14a;
+  --hard-moderate: #f2c84b;
+  --hard-hard: #f39237;
+  --hard-very: #e2513b;
+
+  /* Feedback */
+  --color-success: #13a36e;
+  --color-error: #d63c3c;
+
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1.0625rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.625rem;
+  --fs-2xl: clamp(1.9rem, 3vw + 1rem, 2.75rem);
+  --fs-hero: clamp(2.4rem, 4.5vw + 1rem, 4.25rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 5rem;
+  --section-pad: clamp(4rem, 8vw, 7rem);
+
+  /* Shape & depth */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(12, 27, 46, 0.06), 0 2px 6px rgba(12, 27, 46, 0.04);
+  --shadow-md: 0 8px 24px rgba(12, 27, 46, 0.08);
+  --shadow-lg: 0 24px 60px rgba(12, 27, 46, 0.14);
+
+  /* Layout */
+  --container: 1180px;
+  --header-h: 72px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

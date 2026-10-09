@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Local test pages
+__*.html
+
+# Tooling / secrets (for later backend work)
+node_modules/
+.wrangler/
+.env
+.env.*
+.dev.vars

@@ -3,33 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home Water Softener | Softener, RO, Filter &amp; UV Installation in London &amp; the Home Counties</title>
-  <meta name="description" content="Water softener, reverse osmosis, under-sink carbon filter and UV installation and servicing across London, inside the M25 and the Home Counties. Check your water hardness by postcode." />
+  <title>Water Softener Installation in London | HomeWaterSoftener</title>
+  <meta name="description" content="Water softener installation and servicing across London and the Home Counties. Check your water hardness by postcode, book a service or get a free quote." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://homewatersoftener.co.uk/" />
+  <meta name="theme-color" content="#0b6bcb" />
+
+  <!-- Icons -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+  <!-- Social sharing (WhatsApp, Facebook, LinkedIn, X) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_GB" />
+  <meta property="og:site_name" content="HomeWaterSoftener.co.uk" />
+  <meta property="og:url" content="https://homewatersoftener.co.uk/" />
+  <meta property="og:title" content="Water Softener Installation in London | HomeWaterSoftener" />
+  <meta property="og:description" content="Softer water, happier home. Water softeners, RO, under-sink filters and UV systems installed and serviced across London. Check your water hardness by postcode." />
+  <meta property="og:image" content="https://homewatersoftener.co.uk/assets/img/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="HomeWaterSoftener: softer water, happier home" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/img/hero-family-kitchen.jpg" fetchpriority="high" />
 
+  <!-- Structured data: helps Google show the business, services and FAQs -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "HomeWaterSoftener.co.uk",
-    "parentOrganization": { "@type": "Organization", "name": "DS Water" },
-    "url": "https://homewatersoftener.co.uk/",
-    "telephone": "+44 20 3633 6064",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "The Lightbox G16, 111 Power Road",
-      "addressLocality": "London",
-      "postalCode": "W4 5PY",
-      "addressCountry": "GB"
-    },
-    "areaServed": ["Chiswick", "Kensington", "Holland Park", "Notting Hill", "Hammersmith", "Ealing",
-                   "Shoreditch", "Hackney", "Bethnal Green", "Stratford", "Canary Wharf", "Walthamstow",
-                   "London", "Surrey", "Kent", "Essex", "Hertfordshire", "Buckinghamshire", "Berkshire"],
-    "openingHours": "Mo-Fr 08:00-18:00"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://homewatersoftener.co.uk/#website",
+        "url": "https://homewatersoftener.co.uk/",
+        "name": "HomeWaterSoftener.co.uk",
+        "inLanguage": "en-GB",
+        "publisher": { "@id": "https://homewatersoftener.co.uk/#business" }
+      },
+      {
+        "@type": "HomeAndConstructionBusiness",
+        "@id": "https://homewatersoftener.co.uk/#business",
+        "name": "HomeWaterSoftener.co.uk",
+        "description": "Water softener, reverse osmosis, under-sink carbon filter and UV installation and servicing across London and the Home Counties.",
+        "url": "https://homewatersoftener.co.uk/",
+        "logo": "https://homewatersoftener.co.uk/assets/img/apple-touch-icon.png",
+        "image": "https://homewatersoftener.co.uk/assets/img/og-image.jpg",
+        "telephone": "+44 20 3633 6064",
+        "email": "hello@homewatersoftener.co.uk",
+        "parentOrganization": { "@type": "Organization", "name": "DS Water" },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "The Lightbox G16, 111 Power Road",
+          "addressLocality": "London",
+          "postalCode": "W4 5PY",
+          "addressCountry": "GB"
+        },
+        "openingHoursSpecification": [{
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }],
+        "areaServed": [
+          "Chiswick", "Kensington", "Holland Park", "Notting Hill", "Hammersmith", "Ealing",
+          "Shoreditch", "Hackney", "Bethnal Green", "Stratford", "Canary Wharf", "Walthamstow",
+          "London", "Surrey", "Kent", "Essex", "Hertfordshire", "Buckinghamshire", "Berkshire"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Water treatment services",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Water softener installation" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Water softener servicing and repair" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Under-sink carbon filter installation" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reverse osmosis system installation" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "UV steriliser installation and lamp replacement" } }
+          ]
+        }
+      }
+    ]
   }
   </script>
 
@@ -74,8 +130,8 @@
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-copy">
-          <span class="eyebrow">London &amp; Home Counties water specialists</span>
-          <h1>Softer water, <span class="text-gradient">happier home.</span></h1>
+          <h1 class="eyebrow">Water softener installation in London &amp; the Home Counties</h1>
+          <p class="hero-title">Softer water, <span class="text-gradient">happier home.</span></p>
           <p class="lead">Gentler on your family's skin, kinder to your appliances and no more limescale. We install and service water softeners, reverse osmosis, under-sink filters and UV systems across London and the Home Counties.</p>
           <div class="hero-ctas">
             <a href="#hardness" class="btn btn-primary btn-lg">Check your water hardness</a>
@@ -131,7 +187,7 @@
     <section class="section" id="benefits">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Why soften your water?</span>
+          <span class="eyebrow">Benefits of a water softener</span>
           <h2>You'll notice the difference from day one</h2>
           <p>London's hard water is full of calcium and magnesium. Taking it out changes how your water feels, how your home looks and how long your appliances last.</p>
         </div>
@@ -196,7 +252,7 @@
     <section class="section section-alt" id="hardness">
       <div class="container hardness-grid">
         <div class="hardness-copy">
-          <span class="eyebrow">Free postcode check</span>
+          <span class="eyebrow">London water hardness checker</span>
           <h2>How hard is your water?</h2>
           <p>Most of London and the South East has some of the hardest water in the UK. Hard water leaves limescale on taps, showers, kettles and inside your boiler, which pushes up energy bills and shortens appliance life.</p>
           <p>We'll also estimate how much <strong>sodium</strong> your water would contain once softened, so you know the right drinking-water set-up for your home.</p>
@@ -306,7 +362,7 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">What we install</span>
-          <h2>Water treatment for the whole home</h2>
+          <h2>Water softeners, filters, RO &amp; UV systems</h2>
           <p>From whole-house softening to drinking-water filtration at the kitchen tap, supplied, fitted and serviced by our own engineers.</p>
         </div>
 
@@ -407,7 +463,7 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Already have a system?</span>
-          <h2>Book a service</h2>
+          <h2>Book a water softener service</h2>
           <p>Choose a preferred weekday and time slot, at least 72 hours ahead. We'll confirm your appointment by phone or email.</p>
         </div>
 
@@ -515,7 +571,7 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Where we work</span>
-          <h2>Where we install most</h2>
+          <h2>Where we install most in London</h2>
           <p>Based in Chiswick, our engineers are in these neighbourhoods every week. Tap an area to check its water.</p>
         </div>
 
@@ -664,9 +720,17 @@
       <div class="container faq-wrap">
         <div class="section-head">
           <span class="eyebrow">Questions</span>
-          <h2>Frequently asked</h2>
+          <h2>Water softener FAQs</h2>
         </div>
         <div class="faq-list">
+          <details>
+            <summary>Is London's tap water hard?</summary>
+            <p>Yes. Most of London and the South East has hard or very hard water, typically 250–300+ mg/l of calcium carbonate, because the water passes through chalk and limestone. Use our postcode checker above to see an estimate for your area.</p>
+          </details>
+          <details>
+            <summary>What's the difference between a water softener and a water filter?</summary>
+            <p>A water softener treats the whole house, removing the calcium and magnesium that cause limescale. A filter, such as an under-sink carbon filter or reverse osmosis unit, treats drinking water at one tap to improve taste and remove impurities. Many homes have both.</p>
+          </details>
           <details>
             <summary>How long does a water softener installation take?</summary>
             <p>Most standard installs are completed within a day. We'll confirm timings after your free survey.</p>

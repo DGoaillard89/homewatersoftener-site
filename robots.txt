@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://homewatersoftener.co.uk/sitemap.xml

@@ -61,5 +61,18 @@
     });
   }
 
+  // FAQ structured data for Google, generated from the visible FAQ so the two never drift apart
+  const faqs = [...document.querySelectorAll('.faq-list details')].map((d) => ({
+    '@type': 'Question',
+    name: d.querySelector('summary').textContent.trim(),
+    acceptedAnswer: { '@type': 'Answer', text: d.querySelector('p').textContent.trim() },
+  }));
+  if (faqs.length) {
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs });
+    document.head.appendChild(ld);
+  }
+
   document.getElementById('year').textContent = new Date().getFullYear();
 })();

@@ -37,3 +37,13 @@ Photos from Unsplash (free licence): hero family kitchen, rainfall shower head, 
 - **Booking rules:** weekdays only, minimum 72 hours' notice, bank holidays in `config.js`. Saturday requests go through the contact form.
 - **Testing the dial:** `?postcode=W4` (or any outcode / full postcode) runs the checker on load.
 - **Parent brand:** HomeWaterSoftener.co.uk is a trading name of DS Water (not separately registered).
+
+## SEO
+- **H1** is the keyword line above the hero tagline. The big "Softer water, happier home." is styled text (`.hero-title`), not a heading.
+- **Structured data:** `WebSite` + `HomeAndConstructionBusiness` (address, phone, hours, areas, services) in `<head>`. The `FAQPage` schema is generated at runtime from the visible `.faq-list` (`main.js`), so editing an FAQ updates both.
+- **Social sharing:** `assets/img/og-image.jpg` (1200×630). Icons: `favicon.svg`, `apple-touch-icon.png`.
+- `robots.txt` + `sitemap.xml` at the root. Update `<lastmod>` when content changes.
+- **At launch:**
+  - Pick one host (no `www`) and 301-redirect the other in Cloudflare.
+  - Add the site to Google Search Console and submit the sitemap.
+  - Create or verify the Google Business Profile at W4 5PY, using the same name, phone and address as the site.

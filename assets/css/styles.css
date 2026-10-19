@@ -18,6 +18,8 @@ body {
 }
 h1, h2, h3, h4 { color: var(--color-ink); line-height: 1.15; margin: 0 0 var(--space-4); letter-spacing: -0.02em; }
 h1 { font-size: var(--fs-hero); font-weight: 800; }
+.hero-title { font-size: var(--fs-hero); font-weight: 800; color: var(--color-ink); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 var(--space-4); }
+h1.eyebrow { font-size: var(--fs-xs); line-height: 1.5; letter-spacing: 0.08em; }
 h2 { font-size: var(--fs-2xl); font-weight: 800; }
 h3 { font-size: var(--fs-lg); font-weight: 700; }
 p { margin: 0 0 var(--space-4); }

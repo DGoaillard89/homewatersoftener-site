@@ -694,7 +694,7 @@ def update_index():
     latest = POSTS[:3]
     if latest:
         cards = "\n        ".join(post_card(p, "") for p in latest)
-        block = f"""    <section class="section" id="latest-advice">
+        block = f"""    <section class="section section-alt" id="latest-advice">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Advice</span>

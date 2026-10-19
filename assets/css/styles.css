@@ -620,3 +620,6 @@ button { font: inherit; }
   .post-cta { padding: var(--space-5); }
   .page-hero .hero-ctas .btn { width: 100%; }
 }
+@media (max-width: 600px) {
+  .breadcrumbs li[aria-current="page"] { display: none; }
+}

@@ -35,6 +35,12 @@ window.HWS = window.HWS || {};
   };
 
   const str = (v) => (v == null ? '' : String(v).trim());
+  // Relay field limits (characters). Anything longer is trimmed so the relay never rejects a lead.
+  const LIMITS = { name: 120, email: 200, phone: 40, postcode: 12, message: 5000 };
+  const clamp = (payload) => {
+    Object.entries(LIMITS).forEach(([k, max]) => { if (payload[k].length > max) payload[k] = payload[k].slice(0, max); });
+    return payload;
+  };
 
   /** "sw111aa" → "SW11 1AA" (capitals, single space before the inward code) */
   function formatPostcode(v) {
@@ -71,18 +77,18 @@ window.HWS = window.HWS || {};
       if (str(data.service_type)) lines.push(`Service: ${SERVICES[data.service_type] || str(data.service_type)}`);
       if (str(data.system_model)) lines.push(`System make / model: ${str(data.system_model)}`);
       if (str(data.notes)) lines.push('', `Notes: ${str(data.notes)}`);
-      return { name: str(data.full_name), ...base, message: lines.join('\n') };
+      return clamp({ name: str(data.full_name), ...base, message: lines.join('\n') });
     }
 
     // contact_enquiry (default)
     const lines = [];
     if (str(data.message)) lines.push(str(data.message), '');
     if (str(data.interest)) lines.push(`Interested in: ${INTERESTS[data.interest] || str(data.interest)}`);
-    if (str(data.water_hardness_mgl)) lines.push(`Water hardness (postcode check): ${str(data.water_hardness_mgl)} mg/l CaCO3`);
-    if (str(data.softened_sodium_mgl)) lines.push(`Estimated sodium once softened: ${str(data.softened_sodium_mgl)} mg/l`);
+    if (str(data.water_hardness_mgl)) lines.push(`Water hardness from postcode checker (approx. area estimate): ~${str(data.water_hardness_mgl)} mg/l CaCO3`);
+    if (str(data.softened_sodium_mgl)) lines.push(`Estimated sodium once softened (approx.): ~${str(data.softened_sodium_mgl)} mg/l`);
     const message = lines.join('\n').trim() || 'Quote request from the website contact form (no message left).';
     const name = [str(data.first_name), str(data.last_name)].filter(Boolean).join(' ');
-    return { name, ...base, message };
+    return clamp({ name, ...base, message });
   }
 
   HWS.api = {

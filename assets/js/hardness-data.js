@@ -60,7 +60,7 @@ HWS.hardnessData = {
     { max: 100,      label: 'Moderately soft', color: '--hard-mod-soft', text: 'Your water is fairly soft. A filter may still improve taste.' },
     { max: 150,      label: 'Slightly hard',   color: '--hard-slight',   text: 'You may notice light limescale on taps and in your kettle over time.' },
     { max: 200,      label: 'Moderately hard', color: '--hard-moderate', text: 'Limescale will build up on taps, showers and appliances. A softener will help.' },
-    { max: 300,      label: 'Hard',            color: '--hard-hard',     text: 'Hard water. Expect regular limescale, dry skin and reduced boiler efficiency. A softener is strongly recommended.' },
+    { max: 300,      label: 'Hard',            color: '--hard-hard',     text: 'Hard water. Expect regular limescale, soap scum and scale building up in your boiler. A softener will make a real difference.' },
     { max: Infinity, label: 'Very hard',       color: '--hard-very',     text: 'Very hard water. Among the hardest in the UK. A water softener will make a big difference to your home.' },
   ],
 

@@ -53,7 +53,6 @@
         "logo": "https://homewatersoftener.co.uk/assets/img/apple-touch-icon.png",
         "image": "https://homewatersoftener.co.uk/assets/img/og-image.jpg",
         "telephone": "+44 20 3633 6064",
-        "email": "hello@homewatersoftener.co.uk",
         "parentOrganization": { "@type": "Organization", "name": "DS Water" },
         "address": {
           "@type": "PostalAddress",
@@ -260,7 +259,7 @@
           <form class="postcode-form" id="postcode-form" novalidate>
             <label for="postcode-input" class="sr-only">Your postcode</label>
             <input id="postcode-input" name="postcode" type="text" inputmode="text" autocomplete="postal-code"
-                   placeholder="Postcode, e.g. W4 or SW11 1AA" maxlength="8" required />
+                   placeholder="e.g. W4 or SW11 1AA" maxlength="8" required />
             <button type="submit" class="btn btn-primary">Check</button>
           </form>
           <p class="form-hint" id="postcode-hint" aria-live="polite">Just the first part is fine, e.g. <strong>W4</strong>.</p>
@@ -505,6 +504,11 @@
 
             <input type="hidden" name="preferred_date" id="field-date" />
             <input type="hidden" name="preferred_slot" id="field-slot" />
+            <!-- Spam trap: hidden from people, bots fill it in and the relay drops the lead -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="b-website">Company website</label>
+              <input id="b-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
 
             <div class="field">
               <label for="b-service">Service needed</label>
@@ -551,9 +555,9 @@
               <textarea id="b-notes" name="notes" rows="3"></textarea>
             </div>
 
-            <p class="form-error" data-form-error hidden></p>
+            <p class="form-error" data-form-error role="alert" tabindex="-1" hidden></p>
             <button type="submit" class="btn btn-primary btn-block btn-lg">Request this appointment</button>
-            <p class="fine-print">This is a request. We'll confirm availability before your visit.</p>
+            <p class="fine-print">This is a request. We'll confirm availability before your visit. We only use your details to arrange it: see our <a href="privacy.html">privacy notice</a>.</p>
           </form>
 
           <div class="form-success" id="booking-success" hidden>
@@ -688,8 +692,9 @@
     </section>
 
     <!-- ============================== TESTIMONIALS ============================== -->
-    <!-- PLACEHOLDER REVIEWS: replace with genuine customer reviews (or a Google/Trustpilot widget) before launch -->
-    <section class="section section-alt" id="reviews">
+    <!-- PLACEHOLDER REVIEWS: hidden until genuine customer reviews (or a Google/Trustpilot widget) are added.
+         Replace the text below with real reviews, then remove the `hidden` attribute. -->
+    <section class="section section-alt" id="reviews" hidden>
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Reviews</span>
@@ -764,7 +769,6 @@
           <p>Tell us a little about your home and what you're looking for. We'll get back to you within one working day.</p>
           <ul class="contact-details">
             <li><span>Phone</span><a href="tel:+442036336064">020 3633 6064</a></li>
-            <li><span>Email</span><a href="mailto:hello@homewatersoftener.co.uk">hello@homewatersoftener.co.uk</a></li>
             <li><span>Hours</span>Mon–Fri 8am–6pm</li>
             <li><span>Office</span><address>The Lightbox G16, 111 Power Road<br />Chiswick, London W4 5PY</address></li>
           </ul>
@@ -776,6 +780,11 @@
             <input type="hidden" name="water_hardness_mgl" id="c-hardness" />
             <input type="hidden" name="softened_sodium_mgl" id="c-sodium" />
             <input type="hidden" name="lead_source" value="website_contact_form" />
+            <!-- Spam trap: hidden from people, bots fill it in and the relay drops the lead -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="c-website">Company website</label>
+              <input id="c-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
 
             <div class="field-row">
               <div class="field">
@@ -825,10 +834,10 @@
 
             <label class="checkbox">
               <input type="checkbox" name="consent" value="yes" required />
-              <span>I agree to be contacted about my enquiry. See our <a href="#">privacy policy</a>.</span>
+              <span>I agree to be contacted about my enquiry. See our <a href="privacy.html">privacy notice</a>.</span>
             </label>
 
-            <p class="form-error" data-form-error hidden></p>
+            <p class="form-error" data-form-error role="alert" tabindex="-1" hidden></p>
             <button type="submit" class="btn btn-primary btn-block btn-lg">Send enquiry</button>
           </form>
 
@@ -866,6 +875,7 @@
         <a href="#top" class="logo logo--light">
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
             <path d="M16 3c5 6.5 9 11.4 9 16a9 9 0 0 1-18 0c0-4.6 4-9.5 9-16z" fill="currentColor"/>
+            <path d="M11.5 20a4.5 4.5 0 0 0 4.5 4.5" stroke="#07111e" stroke-width="2" stroke-linecap="round" fill="none"/>
           </svg>
           <span>HomeWater<strong>Softener</strong></span>
         </a>
@@ -891,14 +901,13 @@
       </div>
       <div>
         <h4>Legal</h4>
-        <a href="#">Privacy policy</a>
-        <a href="#">Terms</a>
-        <a href="#">Cookies</a>
+        <a href="privacy.html">Privacy notice</a>
+        <a href="privacy.html#cookies">Cookies</a>
       </div>
     </div>
     <div class="container footer-bottom">
       <span>© <span id="year"></span> HomeWaterSoftener.co.uk</span>
-      <span>HomeWaterSoftener.co.uk is a trading name of DS Water · Company no. 00000000 · Registered in England &amp; Wales</span>
+      <span>HomeWaterSoftener.co.uk is a trading name of DS Water</span>
     </div>
   </footer>
 

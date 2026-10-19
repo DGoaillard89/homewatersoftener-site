@@ -40,7 +40,7 @@
     const errorBox = form.querySelector('[data-form-error]');
     const submitBtn = form.querySelector('[type="submit"]');
     const success = document.getElementById(form.id.replace('-form', '-success'));
-    const fields = form.querySelectorAll('input:not([type="hidden"]), select, textarea');
+    const fields = form.querySelectorAll('input:not([type="hidden"]):not([name="company_website"]), select, textarea');
 
     fields.forEach((f) => f.addEventListener('blur', () => f.closest('.has-error') && validateInput(f)));
     fields.forEach((f) => f.addEventListener('input', () => f.closest('.has-error') && validateInput(f)));
@@ -60,7 +60,7 @@
       }
 
       const data = Object.fromEntries(new FormData(form).entries());
-      if (data.postcode) data.postcode = data.postcode.toUpperCase().trim();
+      if (data.postcode) data.postcode = HWS.api.formatPostcode(data.postcode);
 
       submitBtn.disabled = true;
       const label = submitBtn.textContent;
@@ -71,8 +71,9 @@
         success.hidden = false;
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (err) {
-        errorBox.textContent = 'Sorry, something went wrong. Please try again or call us.';
+        errorBox.innerHTML = 'Sorry, something went wrong and your request wasn\'t sent. Please try again, or call us on <a href="tel:+442036336064">020 3633 6064</a>.';
         errorBox.hidden = false;
+        errorBox.focus();
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = label;
@@ -84,6 +85,7 @@
   document.querySelectorAll('[data-reset-form]').forEach((btn) => btn.addEventListener('click', () => {
     const form = document.getElementById(btn.dataset.resetForm);
     form.reset();
+    form.querySelector('[data-form-error]').hidden = true;
     if (form.dataset.formType === 'service_booking' && HWS.booking) HWS.booking.reset();
     btn.closest('.form-success').hidden = true;
     form.hidden = false;

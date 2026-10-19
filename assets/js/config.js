@@ -14,9 +14,10 @@ HWS.config = {
     ],
   },
 
-  // CRM integration (backend not built yet).
-  // When ready, set an endpoint and api.js will POST JSON to it.
+  // CRM integration: both forms POST JSON (mapped in api.js) to the shared
+  // konda-enquiries Cloudflare Worker, which writes the lead to Airtable.
+  // Set to null to log payloads to the console instead (local testing).
   crm: {
-    endpoint: null,           // planned: '/api/lead' (Cloudflare Worker → Airtable)
+    endpoint: 'https://konda-enquiries.daniel-10c.workers.dev',
   },
 };

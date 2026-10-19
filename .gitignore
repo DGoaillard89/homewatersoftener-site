@@ -10,3 +10,6 @@ node_modules/
 .env
 .env.*
 .dev.vars
+
+# Build notes for agents (local only)
+_build-notes.md

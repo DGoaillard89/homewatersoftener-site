@@ -19,13 +19,16 @@
   nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setNav(false)));
 
   // Service "Get a quote" buttons → prefill + scroll to contact
-  document.querySelectorAll('[data-quote]').forEach((btn) => btn.addEventListener('click', () => {
+  document.querySelectorAll('[data-quote]').forEach((btn) => btn.addEventListener('click', (e) => {
+    const contact = document.getElementById('contact');
+    if (!contact) return;
+    e.preventDefault();
     HWS.prefillContact({ interest: btn.dataset.quote });
-    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    contact.scrollIntoView({ behavior: 'smooth' });
   }));
 
   // Scroll reveal
-  const revealTargets = document.querySelectorAll('.section-head, .service-card, .step, .review-card, .dial-card, .booking-card, .contact-card, .faq-list details');
+  const revealTargets = document.querySelectorAll('.section-head, .service-card, .step, .review-card, .dial-card, .booking-card, .contact-card, .post-card, main > .section:not(.section--page) .faq-list details');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
       if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
@@ -67,12 +70,13 @@
     name: d.querySelector('summary').textContent.trim(),
     acceptedAnswer: { '@type': 'Answer', text: d.querySelector('p').textContent.trim() },
   }));
-  if (faqs.length) {
+  const hasStaticFaq = [...document.querySelectorAll('script[type="application/ld+json"]')].some((s) => s.textContent.includes('"FAQPage"'));
+  if (faqs.length && !hasStaticFaq) {
     const ld = document.createElement('script');
     ld.type = 'application/ld+json';
     ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs });
     document.head.appendChild(ld);
   }
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();

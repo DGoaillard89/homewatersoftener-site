@@ -135,10 +135,11 @@
     return { incoming, added, total, status };
   }
 
+  // Estimates only: based on typical (placeholder) area figures, not supplier data.
   const VERDICTS = {
     over: 'Fully softened, your water could <strong>exceed the 200 mg/l</strong> drinking limit. We\'d recommend a blended supply, plus a hard-water drinking tap or an RO unit in the kitchen.',
     close: 'Fully softened, your water would be <strong>close to the 200 mg/l</strong> drinking limit. We\'d fit a hard-water drinking tap or RO unit for drinking and baby feeds.',
-    ok: 'Softened water should stay <strong>within the 200 mg/l</strong> limit. We still recommend a hard-water drinking tap for baby formula and low-sodium diets.',
+    ok: 'Softened water should stay <strong>within the 200 mg/l</strong> limit. We still recommend a hard-water drinking tap, especially for making up baby formula.',
   };
 
   function renderSodium(na) {
@@ -154,7 +155,7 @@
       incomingFill.style.width = pct(na.incoming);
       addedFill.style.width = pct(Math.min(na.added, SODIUM_BAR_MAX - na.incoming));
     }));
-    document.getElementById('sodium-incoming').textContent = `${na.incoming} mg/l`;
+    document.getElementById('sodium-incoming').textContent = `≈ ${na.incoming} mg/l`;
     document.getElementById('sodium-added').textContent = `+${na.added} mg/l`;
     document.getElementById('sodium-total').textContent = `≈ ${na.total} mg/l`;
     document.getElementById('sodium-verdict').innerHTML = VERDICTS[na.status];
@@ -171,7 +172,8 @@
 
     resultEl.innerHTML = `
       <span class="dial-result-rating" style="background:var(${band.color})">${band.label}</span>
-      <p class="dial-result-text"><strong>${pc.formatted}</strong> · ${band.text}</p>`;
+      <p class="dial-result-text"><strong>${pc.formatted}</strong> · ${band.text}</p>
+      <p class="dial-result-note">Approximate figure, typical for ${entry.name}. Check with your water supplier for an exact reading.</p>`;
     document.getElementById('stat-clark').textContent = (entry.mgl / 14.3).toFixed(1) + '°';
     document.getElementById('stat-dh').textContent = (entry.mgl / 17.8).toFixed(1) + '°';
     document.getElementById('stat-area').textContent = entry.name;

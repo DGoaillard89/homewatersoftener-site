@@ -102,7 +102,7 @@ NAV_ITEMS = [
     ("water-softener-installation.html", "Installation"),
     ("water-softener-servicing.html", "Servicing"),
     ("blog/", "Advice"),
-    ("#faq@home", "FAQ"),
+    ("faqs.html", "FAQ"),
     ("#contact", "Contact"),
 ]
 
@@ -164,15 +164,17 @@ def footer_cols(prefix, home=False):
       </div>
       <div>
         <h4>Company</h4>
+        <a href="{prefix}about.html">About us</a>
         <a href="{h}#booking">Book a service</a>
         <a href="{prefix}blog/">Advice</a>
-        <a href="{h}#faq">FAQ</a>
+        <a href="{prefix}faqs.html">FAQs</a>
         <a href="{h}#contact">Contact</a>
       </div>
       <div>
         <h4>Legal</h4>
         <a href="{prefix}privacy.html">Privacy notice</a>
         <a href="{prefix}privacy.html#cookies">Cookies</a>
+        <button type="button" class="footer-linkbtn" data-cookie-settings hidden>Cookie settings</button>
       </div>"""
 
 
@@ -364,7 +366,21 @@ def checker_html(prefix):
     </section>"""
 
 
-SCRIPTS = ["config.js", "hardness-data.js", "api.js", "hardness-dial.js", "booking-calendar.js", "forms.js", "main.js"]
+SCRIPTS = ["consent.js", "config.js", "hardness-data.js", "api.js", "hardness-dial.js", "booking-calendar.js", "forms.js", "main.js"]
+
+
+def mobile_bar_html(prefix, cta="quote"):
+    """Slim call / enquire bar, shown on small screens only (CSS)."""
+    if cta == "booking":
+        action = f'<a href="{prefix or "./"}#booking" class="btn btn-primary">Book a service</a>'
+    elif cta == "home":
+        action = f'<a href="{prefix or "./"}#contact" class="btn btn-primary">Get a free quote</a>'
+    else:
+        action = '<a href="#contact" class="btn btn-primary">Get a free quote</a>'
+    return f"""<div class="mobile-cta-bar">
+    <a href="{TEL}" class="btn btn-ghost">Call us</a>
+    {action}
+  </div>"""
 
 
 def scripts_html(prefix):
@@ -458,7 +474,8 @@ def aside_html(prefix, related, cta="quote", exclude_post=None, exclude_page=Non
                if cta == "booking" else '<a href="#contact" class="btn btn-primary btn-block">Get a free quote</a>')
     pages = [("water-softener-installation", "Water softener installation"),
              ("water-softener-servicing", "Servicing &amp; repairs"),
-             ("hard-water-areas-london", "Hard water areas &amp; postcode checker")]
+             ("hard-water-areas-london", "Hard water areas &amp; postcode checker"),
+             ("faqs", "Water softener FAQs")]
     page_links = "".join(f'<li><a href="{prefix}{s}.html">{l}</a></li>' for s, l in pages if s != exclude_page)
     return f"""<aside class="page-aside">
           <div class="aside-card aside-card--cta">
@@ -492,7 +509,9 @@ def build_page(p):
                    "serviceType": p["service_name"], "description": p["description"], "url": canonical,
                    "provider": BUSINESS_REF, "areaServed": [{"@type": "Place", "name": a} for a in AREAS]})
     else:
-        ld.append({"@context": "https://schema.org", "@type": "WebPage", "name": p["h1"], "url": canonical,
+        page_type = "AboutPage" if kind == "about" else "WebPage"
+        ld.append({"@context": "https://schema.org", "@type": page_type, "name": p["h1"], "url": canonical,
+                   "dateModified": p.get("modified", TODAY), "inLanguage": "en-GB",
                    "description": p["description"], "isPartOf": {"@id": f"{SITE}/#website"}})
     ld.append(crumbs_ld)
     faqs = faqs_from(p["body"])
@@ -540,6 +559,7 @@ def build_page(p):
 
   {footer_html(prefix)}
 
+  {mobile_bar_html(prefix, cta if has_contact else "home")}
   {scripts_html(prefix)}
 </body>
 </html>
@@ -600,6 +620,7 @@ def build_post(p):
 
   {footer_html(prefix)}
 
+  {mobile_bar_html(prefix)}
   {scripts_html(prefix)}
 </body>
 </html>
@@ -643,6 +664,7 @@ def build_blog_index():
 
   {footer_html(prefix)}
 
+  {mobile_bar_html(prefix)}
   {scripts_html(prefix)}
 </body>
 </html>
@@ -670,6 +692,7 @@ def build_404():
     </section>
   </main>
   {footer_html(prefix)}
+  {mobile_bar_html(prefix, "home")}
   {scripts_html(prefix)}
 </body>
 </html>

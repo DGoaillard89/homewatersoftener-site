@@ -135,6 +135,9 @@ window.HWS = window.HWS || {};
      */
     async submitLead(type, data) {
       const payload = buildPayload(type, data);
+      // Ad-click / UTM details (if the visitor arrived from an ad), so the lead can be matched to it
+      const note = HWS.attributionNote ? HWS.attributionNote() : '';
+      if (note) payload.message = (payload.message.slice(0, LIMITS.message - note.length) + note);
       const endpoint = HWS.config.crm.endpoint;
 
       if (!endpoint) {

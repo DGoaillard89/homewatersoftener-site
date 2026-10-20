@@ -67,6 +67,12 @@
       submitBtn.textContent = 'Sending…';
       try {
         await HWS.api.submitLead(form.dataset.formType, data);
+        HWS.track?.('generate_lead', {
+          enquiry_type: 'Water Softeners',
+          form_id: form.dataset.formType === 'service_booking' ? 'service_booking' : 'quote_enquiry',
+          service: data.service_type || data.interest || '',
+          page_path: location.pathname,
+        });
         form.hidden = true;
         success.hidden = false;
         success.scrollIntoView({ behavior: 'smooth', block: 'center' });

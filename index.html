@@ -88,7 +88,11 @@
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reverse osmosis system installation" } },
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "UV steriliser installation and lamp replacement" } }
           ]
-        }
+        },
+        "knowsAbout": [
+          "Water softeners", "Hard water", "Limescale", "Reverse osmosis", "UV water sterilisers",
+          "Water Supply (Water Fittings) Regulations 1999", "Drinking water sodium limits"
+        ]
       }
     ]
   }
@@ -128,7 +132,7 @@
       "name": "Can I still drink softened water?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We usually recommend keeping a hard-water drinking tap in the kitchen, or adding an under-sink carbon or RO filter for drinking water. We'll talk you through the options."
+        "text": "Drink from a separate unsoftened tap instead. We fit a hard-water drinking tap in the kitchen with every softener, which is what the Drinking Water Inspectorate advises, and you can add an under-sink carbon or RO filter if you'd like. We'll talk you through the options."
       }
     },
     {
@@ -183,7 +187,7 @@
         <a href="water-softener-installation.html">Installation</a>
         <a href="water-softener-servicing.html">Servicing</a>
         <a href="blog/">Advice</a>
-        <a href="#faq">FAQ</a>
+        <a href="faqs.html">FAQ</a>
         <a href="#contact">Contact</a>
         <!-- NAV:END -->
       </nav>
@@ -866,7 +870,7 @@
           </details>
           <details>
             <summary>Can I still drink softened water?</summary>
-            <p>We usually recommend keeping a hard-water drinking tap in the kitchen, or adding an under-sink carbon or RO filter for drinking water. We'll talk you through the options.</p>
+            <p>Drink from a separate unsoftened tap instead. We fit a hard-water drinking tap in the kitchen with every softener, which is what the Drinking Water Inspectorate advises, and you can add an under-sink carbon or RO filter if you'd like. We'll talk you through the options.</p>
           </details>
           <details>
             <summary>How often should my system be serviced?</summary>
@@ -881,6 +885,7 @@
             <p>All of London inside the M25 plus the Home Counties: Surrey, Kent, Essex, Hertfordshire, Buckinghamshire and Berkshire. We're based in Chiswick (W4) and install most often across West and East London.</p>
           </details>
         </div>
+        <p class="text-center faq-more"><a href="faqs.html" class="btn btn-ghost">See all water softener FAQs</a></p>
       </div>
     </section>
 
@@ -1019,15 +1024,17 @@
       </div>
       <div>
         <h4>Company</h4>
+        <a href="about.html">About us</a>
         <a href="#booking">Book a service</a>
         <a href="blog/">Advice</a>
-        <a href="#faq">FAQ</a>
+        <a href="faqs.html">FAQs</a>
         <a href="#contact">Contact</a>
       </div>
       <div>
         <h4>Legal</h4>
         <a href="privacy.html">Privacy notice</a>
         <a href="privacy.html#cookies">Cookies</a>
+        <button type="button" class="footer-linkbtn" data-cookie-settings hidden>Cookie settings</button>
       </div>
       <!-- FOOTER:END -->
     </div>
@@ -1045,7 +1052,14 @@
     <span class="book-fab-text"><strong>Book a service</strong><small>Pick a date in seconds</small></span>
   </a>
 
+  <!-- Slim call / book bar, small screens only -->
+  <div class="mobile-cta-bar">
+    <a href="tel:+442036336064" class="btn btn-ghost">Call us</a>
+    <a href="#booking" class="btn btn-primary">Book a service</a>
+  </div>
+
   <!-- Scripts: plain (non-module) so the page also works when opened directly from disk -->
+  <script src="assets/js/consent.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/hardness-data.js"></script>
   <script src="assets/js/api.js"></script>

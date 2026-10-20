@@ -28,11 +28,21 @@ window.HWS = window.HWS || {};
     'uv-lamp-replacement': 'UV: lamp & sleeve replacement',
     'other': 'Something else',
   };
+  // Heading line for a service booking enquiry, by service type
+  const SERVICE_TITLES = {
+    'softener-annual-service': 'Softener Service request',
+    'softener-repair': 'Softener Repair request',
+    'carbon-filter-change': 'Carbon Filter Change request',
+    'ro-service': 'Reverse Osmosis Service request',
+    'uv-lamp-replacement': 'UV Lamp Replacement request',
+    'other': 'Service request',
+  };
   const SLOTS = {
-    morning: 'Morning (8am–12pm)',
-    afternoon: 'Afternoon (12pm–5pm)',
+    morning: 'AM preferred (8am–12pm)',
+    afternoon: 'PM preferred (12pm–5pm)',
     any: 'Any time (flexible)',
   };
+  const LEAD_SOURCE = 'homewatersoftener.co.uk';
 
   const str = (v) => (v == null ? '' : String(v).trim());
   // Relay field limits (characters). Anything longer is trimmed so the relay never rejects a lead.
@@ -60,6 +70,17 @@ window.HWS = window.HWS || {};
     return `${get('weekday')} ${get('day')} ${get('month')} ${get('year')}`;
   }
 
+  /** "2026-10-27" → "Tuesday 27th October 2026" */
+  function formatLongDate(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str(iso));
+    if (!m) return str(iso);
+    const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    const day = +m[3];
+    const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+    const fmt = (opts) => new Intl.DateTimeFormat('en-GB', { ...opts, timeZone: 'UTC' }).format(d);
+    return `${fmt({ weekday: 'long' })} ${day}${suffix} ${fmt({ month: 'long' })} ${m[1]}`;
+  }
+
   /** Turn a form's fields into the relay's payload. Pure function, so it can be tested. */
   function buildPayload(type, data) {
     const base = {
@@ -71,11 +92,21 @@ window.HWS = window.HWS || {};
     };
 
     if (type === 'service_booking') {
-      const lines = ['Service booking request'];
-      if (str(data.preferred_date)) lines.push(`Preferred date: ${formatDate(data.preferred_date)}`);
-      if (str(data.preferred_slot)) lines.push(`Preferred time: ${SLOTS[data.preferred_slot] || str(data.preferred_slot)}`);
+      // Reads as a standard enquiry, e.g.
+      //   Softener Service request / Tuesday 27th October 2026 / PM preferred (12pm–5pm) / Name: … / Email: … / …
+      const lines = [SERVICE_TITLES[data.service_type] || 'Service request'];
+      if (str(data.preferred_date)) lines.push(formatLongDate(data.preferred_date));
+      if (str(data.preferred_slot)) lines.push(SLOTS[data.preferred_slot] || str(data.preferred_slot));
+      lines.push(
+        '',
+        `Name: ${str(data.full_name)}`,
+        `Email: ${base.email}`,
+        `Phone: ${base.phone}`,
+        `Postcode: ${base.postcode}`,
+      );
       if (str(data.service_type)) lines.push(`Service: ${SERVICES[data.service_type] || str(data.service_type)}`);
       if (str(data.system_model)) lines.push(`System make / model: ${str(data.system_model)}`);
+      lines.push(`Lead source: ${LEAD_SOURCE} (service booking calendar)`);
       if (str(data.notes)) lines.push('', `Notes: ${str(data.notes)}`);
       return clamp({ name: str(data.full_name), ...base, message: lines.join('\n') });
     }
@@ -95,6 +126,7 @@ window.HWS = window.HWS || {};
     buildPayload,
     formatPostcode,
     formatDate,
+    formatLongDate,
 
     /**
      * @param {string} type  'contact_enquiry' | 'service_booking'

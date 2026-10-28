@@ -5,15 +5,21 @@ Static page builder for HomeWaterSoftener.co.uk (no dependencies, Python 3.8+).
 Source content lives in _content/ (ignored by GitHub Pages because of the underscore):
   _content/pages/<slug>.html  ->  /<slug>.html
   _content/blog/<slug>.html   ->  /blog/<slug>.html   (+ /blog/index.html)
+  _content/areas/<slug>.html  ->  /areas/<slug>.html  (index.html = the /areas/ hub)
 
 Each source file = one line of JSON metadata, then the HTML body.
 Page keys:  slug, title, description, excerpt, h1, eyebrow, kind ("service"|"areas"|"legal"),
             service_name, related (list of blog slugs), cta ("quote"|"booking")
 Post keys:  slug, title, description, excerpt, h1, date (YYYY-MM-DD), modified, image, image_w,
-            image_h, image_alt, related (blog slugs), pages (page slugs)
+            image_h, image_alt, related (blog slugs), pages (page slugs), n (post number, breaks
+            same-day ties so the older post stays older)
+Area keys:  slug, title, description, excerpt, h1, area_name, area_type ("AdministrativeArea"|"City"),
+            group ("London"|"Home Counties"), card (short hub-card text), related, modified
+            The hub (slug "index") body may contain <!-- AREA_CARDS --> where the cards go.
 
 Also regenerates: sitemap.xml, 404.html, and the marked blocks in index.html
-(<!-- NAV:START/END -->, <!-- FOOTER:START/END -->, <!-- LATEST:START/END -->, <!-- FAQLD:START/END -->).
+(<!-- NAV:START/END -->, <!-- FOOTER:START/END -->, <!-- LATEST:START/END -->, <!-- FAQLD:START/END -->,
+<!-- AREAS:START/END -->).
 
 Links in bodies are written root-relative ("/blog/x.html", "/#contact"); the builder makes
 them relative to the output page, and drops links to blog posts that don't exist yet
@@ -47,7 +53,13 @@ def load(folder):
 
 
 PAGES = load("pages")
-POSTS = sorted(load("blog"), key=lambda p: p["date"], reverse=True)  # newest first
+POSTS = sorted(load("blog"), key=lambda p: (p["date"], p.get("n", 0)), reverse=True)  # newest first
+AREA_SRC = load("areas")
+AREA_HUB = next((a for a in AREA_SRC if a["slug"] == "index"), None)
+AREA_PAGES = [a for a in AREA_SRC if a["slug"] != "index"]
+AREA_ORDER = ["west-london", "north-london", "south-london", "east-london", "surrey", "hertfordshire",
+              "buckinghamshire", "berkshire", "kent", "essex"]
+AREA_PAGES.sort(key=lambda a: AREA_ORDER.index(a["slug"]) if a["slug"] in AREA_ORDER else 99)
 POST_SLUGS = {p["slug"] for p in POSTS}
 PAGE_BY_SLUG = {p["slug"]: p for p in PAGES}
 
@@ -101,6 +113,7 @@ NAV_ITEMS = [
     ("hard-water-areas-london.html", "Water hardness"),
     ("water-softener-installation.html", "Installation"),
     ("water-softener-servicing.html", "Servicing"),
+    ("areas/", "Areas"),
     ("blog/", "Advice"),
     ("faqs.html", "FAQ"),
     ("#contact", "Contact"),
@@ -160,7 +173,8 @@ def footer_cols(prefix, home=False):
         <a href="{prefix}water-softener-installation.html">Water softener installation</a>
         <a href="{prefix}water-softener-servicing.html">Servicing &amp; repairs</a>
         <a href="{h}#services">Filters, RO &amp; UV</a>
-        <a href="{prefix}hard-water-areas-london.html">Hard water areas</a>
+        <a href="{prefix}hard-water-areas-london.html">Hard water in London</a>
+        <a href="{prefix}areas/">Areas we cover</a>
       </div>
       <div>
         <h4>Company</h4>
@@ -672,6 +686,125 @@ def build_blog_index():
     write(ROOT / "blog" / "index.html", out)
 
 
+# ---------------------------------------------------------------- areas (/areas/)
+def area_cards(prefix, heading="h3"):
+    out = []
+    for group in ("London", "Home Counties"):
+        items = [a for a in AREA_PAGES if a.get("group") == group]
+        if not items:
+            continue
+        cards = "\n          ".join(f"""<article class="post-card area-card">
+            <div class="post-card-body">
+              <{heading}><a href="{prefix}areas/{a['slug']}.html">{esc(a['area_name'])}</a></{heading}>
+              <p>{esc(a['card'])}</p>
+              <a class="post-card-more" href="{prefix}areas/{a['slug']}.html" aria-label="Water softeners in {esc(a['area_name'])}">Softeners in {esc(a['area_name'])} &rarr;</a>
+            </div>
+          </article>""" for a in items)
+        out.append(f'<h2>{"London" if group == "London" else "The Home Counties"}</h2>\n'
+                   f'<div class="post-grid area-grid">\n          {cards}\n        </div>')
+    return "\n".join(out)
+
+
+def build_area(p):
+    prefix = "../"
+    canonical = f"{SITE}/areas/{p['slug']}.html"
+    title = full_title(p["title"])
+    hub = f"{SITE}/areas/"
+    crumbs_html, crumbs_ld = breadcrumbs(prefix, [("Home", "../", f"{SITE}/"), ("Areas we cover", "./", hub),
+                                                  (p["area_name"], None, canonical)])
+    place = {"@type": p.get("area_type", "AdministrativeArea"), "name": p["area_name"]}
+    if p.get("group") == "London":
+        place["containedInPlace"] = {"@type": "City", "name": "London"}
+    ld = [{"@context": "https://schema.org", "@type": "Service", "name": p["h1"],
+           "serviceType": "Water softener installation", "description": p["description"], "url": canonical,
+           "provider": BUSINESS_REF, "areaServed": place},
+          crumbs_ld]
+    faqs = faqs_from(p["body"])
+    if faqs:
+        ld.append({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs})
+    body = relink(p["body"], prefix)
+    hero_ctas = f'<div class="hero-ctas"><a href="#contact" class="btn btn-primary btn-lg">Get a free quote</a><a href="{TEL}" class="btn btn-ghost btn-lg">Call {PHONE}</a></div>'
+    out = f"""{head_html(prefix, title, p['description'], canonical, ld)}
+<body>
+  {header_html(prefix, current="areas/")}
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        {crumbs_html}
+        <span class="eyebrow">{esc(p.get('eyebrow', 'Areas we cover'))}</span>
+        <h1>{esc(p['h1'])}</h1>
+        <p class="lead lead--wide">{esc(p['excerpt'])}</p>
+        {hero_ctas}
+      </div>
+    </section>
+    <section class="section section--page">
+      <div class="container page-layout">
+        <article class="prose">{body}</article>
+        {aside_html(prefix, p.get('related', []))}
+      </div>
+    </section>
+    {contact_html(prefix)}
+  </main>
+
+  {footer_html(prefix)}
+
+  {mobile_bar_html(prefix)}
+  {scripts_html(prefix)}
+</body>
+</html>
+"""
+    write(ROOT / "areas" / f"{p['slug']}.html", out)
+
+
+def build_area_hub(p):
+    prefix = "../"
+    canonical = f"{SITE}/areas/"
+    title = full_title(p["title"])
+    crumbs_html, crumbs_ld = breadcrumbs(prefix, [("Home", "../", f"{SITE}/"), ("Areas we cover", None, canonical)])
+    ld = [{"@context": "https://schema.org", "@type": "CollectionPage", "name": p["h1"], "url": canonical,
+           "description": p["description"], "inLanguage": "en-GB", "dateModified": p.get("modified", TODAY),
+           "isPartOf": {"@id": f"{SITE}/#website"}, "about": {"@id": f"{SITE}/#business"},
+           "mainEntity": {"@type": "ItemList", "itemListElement": [
+               {"@type": "ListItem", "position": i, "name": a["h1"], "url": f"{SITE}/areas/{a['slug']}.html"}
+               for i, a in enumerate(AREA_PAGES, 1)]}},
+          crumbs_ld]
+    faqs = faqs_from(p["body"])
+    if faqs:
+        ld.append({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs})
+    body = relink(p["body"], prefix).replace("<!-- AREA_CARDS -->", area_cards(prefix))
+    out = f"""{head_html(prefix, title, p['description'], canonical, ld)}
+<body>
+  {header_html(prefix, current="areas/")}
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        {crumbs_html}
+        <span class="eyebrow">{esc(p.get('eyebrow', 'Areas we cover'))}</span>
+        <h1>{esc(p['h1'])}</h1>
+        <p class="lead lead--wide">{esc(p['excerpt'])}</p>
+        <div class="hero-ctas"><a href="#contact" class="btn btn-primary btn-lg">Get a free quote</a><a href="{TEL}" class="btn btn-ghost btn-lg">Call {PHONE}</a></div>
+      </div>
+    </section>
+    <section class="section section--page">
+      <div class="container">
+        <div class="prose prose--hub">{body}</div>
+      </div>
+    </section>
+    {contact_html(prefix)}
+  </main>
+
+  {footer_html(prefix)}
+
+  {mobile_bar_html(prefix)}
+  {scripts_html(prefix)}
+</body>
+</html>
+"""
+    write(ROOT / "areas" / "index.html", out)
+
+
 def build_404():
     prefix = "/"
     out = f"""{head_html(prefix, "Page not found | HomeWaterSoftener", "Sorry, we couldn't find that page.", f"{SITE}/404.html", [])}
@@ -733,6 +866,10 @@ def update_index():
     else:
         block = ""
     text = replace_block(text, "LATEST", block)
+    chips = "\n            ".join(f'<a class="chip" href="areas/{a["slug"]}.html">{esc(a["area_name"])}</a>' for a in AREA_PAGES)
+    text = replace_block(text, "AREAS", f"""          <div class="area-chips">
+            {chips}
+          </div>""")
     faqs = faqs_from(re.sub(r"\s*\n\s*", "", text.split('class="faq-list"')[1].split("</section>")[0]))
     ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqs}, ensure_ascii=False, indent=2)
     text = replace_block(text, "FAQLD", f'  <script type="application/ld+json">\n  {ld}\n  </script>')
@@ -743,6 +880,9 @@ def update_index():
 def build_sitemap():
     urls = [(f"{SITE}/", TODAY)]
     urls += [(f"{SITE}/{p['slug']}.html", p.get("modified", TODAY)) for p in PAGES]
+    if AREA_HUB:
+        urls.append((f"{SITE}/areas/", AREA_HUB.get("modified", TODAY)))
+    urls += [(f"{SITE}/areas/{a['slug']}.html", a.get("modified", TODAY)) for a in AREA_PAGES]
     urls.append((f"{SITE}/blog/", POSTS[0]["date"] if POSTS else TODAY))
     urls += [(f"{SITE}/blog/{p['slug']}.html", p.get("modified", p["date"])) for p in POSTS]
     body = "\n".join(f"  <url>\n    <loc>{u}</loc>\n    <lastmod>{d}</lastmod>\n  </url>" for u, d in urls)
@@ -755,10 +895,14 @@ if __name__ == "__main__":
     for p in POSTS:
         build_post(p)
     build_blog_index()
+    for a in AREA_PAGES:
+        build_area(a)
+    if AREA_HUB:
+        build_area_hub(AREA_HUB)
     build_404()
     update_index()
     build_sitemap()
-    for p in PAGES + POSTS:
+    for p in PAGES + POSTS + AREA_SRC:
         t = full_title(p["title"])
         if len(t) > 60 or len(p["description"]) > 155:
             print(f"WARNING length: {p['slug']} title={len(t)} desc={len(p['description'])}")

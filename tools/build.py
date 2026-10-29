@@ -194,21 +194,7 @@ def footer_cols(prefix, home=False):
 
 def footer_html(prefix):
     home_href = prefix or "./"
-    return f"""<section class="parent-brand" aria-labelledby="parent-brand-title">
-    <div class="container parent-inner">
-      <a href="https://dswater.co.uk" class="parent-logo" target="_blank" rel="noopener">
-        <img src="{prefix}assets/img/ds-water-logo.png" width="738" height="342" alt="DS Water" loading="lazy" />
-      </a>
-      <div class="parent-copy">
-        <span class="eyebrow eyebrow--ds">Part of DS Water</span>
-        <h2 id="parent-brand-title">The home water arm of DS Water</h2>
-        <p>HomeWaterSoftener.co.uk is part of DS Water. You get the same experienced engineers, standards and aftercare, with a service designed specifically for homes.</p>
-      </div>
-      <a href="https://dswater.co.uk" class="btn btn-ds" target="_blank" rel="noopener">Visit DS Water</a>
-    </div>
-  </section>
-
-  <footer class="site-footer">
+    return f"""<footer class="site-footer">
     <div class="container footer-inner">
       <div>
         <a href="{home_href}" class="logo logo--light">
@@ -454,8 +440,7 @@ def breadcrumbs(prefix, trail):
 BUSINESS_REF = {"@type": "HomeAndConstructionBusiness", "@id": f"{SITE}/#business", "name": "HomeWaterSoftener.co.uk",
                 "telephone": "+44 20 3633 6064", "url": f"{SITE}/"}
 PUBLISHER = {"@type": "Organization", "name": "HomeWaterSoftener.co.uk", "url": f"{SITE}/",
-             "logo": {"@type": "ImageObject", "url": f"{SITE}/assets/img/apple-touch-icon.png", "width": 180, "height": 180},
-             "parentOrganization": {"@type": "Organization", "name": "DS Water", "url": "https://dswater.co.uk"}}
+             "logo": {"@type": "ImageObject", "url": f"{SITE}/assets/img/apple-touch-icon.png", "width": 180, "height": 180}}
 AREAS = ["London", "Surrey", "Kent", "Essex", "Hertfordshire", "Buckinghamshire", "Berkshire"]
 
 
